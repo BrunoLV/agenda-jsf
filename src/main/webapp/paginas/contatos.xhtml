@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:b="http://bootsfaces.net/ui"
+>
+<ui:composition template="/WEB-INF/template/layout.xhtml">
+	<ui:define name="content">
+		<b:container fluid="true">
+			<br />
+			<b:row>
+				<b:column>
+					<b:panel collapsible="false">
+						<f:facet name="heading">
+							<h:outputText value="Contatos" />
+						</f:facet>
+						<b:form>
+							<b:button outcome="cadastro" look="primary" iconAwesome="plus" value="Novo" />
+							<br />
+							<br />
+							<b:dataTable value="#{contatoMB.contatos}" var="contato" id="tblContatos"
+								customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+							>
+								<b:dataTableColumn style="width:10%;" value="#{contato.id}" label="Id" />
+								<b:dataTableColumn value="#{contato.nome}" label="Nome" />
+								<b:dataTableColumn style="width:5%;" label="" orderable="false">
+									<b:link iconAwesome="edit" look="success" value="Editar" outcome="cadastro?faces-redirect=true">
+										<f:param name="idContato" value="#{contato.id}" />
+									</b:link>
+								</b:dataTableColumn>
+								<b:dataTableColumn style="width:5%;" label="" orderable="false">
+									<b:commandButton iconAwesome="trash" look="danger" value="Excluir" actionListener="#{contatoMB.deletar(contato)}" />
+								</b:dataTableColumn>
+							</b:dataTable>
+						</b:form>
+					</b:panel>
+				</b:column>
+			</b:row>
+			<br />
+		</b:container>
+	</ui:define>
+</ui:composition>
+</html>

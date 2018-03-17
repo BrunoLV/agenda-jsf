@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:b="http://bootsfaces.net/ui"
+>
+<ui:composition template="/WEB-INF/template/layout.xhtml">
+	<f:metadata>
+		<f:viewParam name="idContato" value="#{contatoMB.idContato}" />
+		<f:viewAction action="#{contatoMB.carregaContato}" if="#{param.idContato != null}" />
+	</f:metadata>
+	<ui:define name="content">
+		<b:container fluid="true">
+			<b:form>
+				<b:panel>
+					<f:facet name="heading">
+						<h:outputText value="Dados do Contato" />
+					</f:facet>
+					<b:row>
+						<b:column medium-screen="4">
+							<h:outputLabel value="Nome" for="inputNome" />
+							<b:inputText id="inputNome" value="#{contatoMB.contato.nome}" />
+						</b:column>
+					</b:row>
+					<b:panel id="pnlTelefone">
+						<f:facet name="heading">
+							<h:outputText value="Telefones" />
+						</f:facet>
+						<b:row>
+							<b:column medium-screen="1">
+								<h:outputLabel value="DDD" for="inputDDD" />
+								<b:inputText id="inputDDD" value="#{contatoMB.telefone.ddd}" />
+							</b:column>
+							<b:column medium-screen="3">
+								<h:outputLabel value="Número" for="inputNumero" />
+								<b:inputText id="inputNumero" value="#{contatoMB.telefone.numero}" />
+							</b:column>
+							<b:column medium-screen="3">
+								<h:outputLabel value="Tipo" for="selectTipo" />
+								<b:selectOneMenu id="selectTipo" value="#{contatoMB.telefone.tipo}">
+									<f:selectItem itemLabel="" itemValue="#{null}" />
+									<f:selectItems value="#{contatoMB.tipos}" var="tipo" itemLabel="#{tipo.descricao}" itemValue="#{tipo}" />
+									<f:converter converterId="enumTipoTelefoneConverter" />
+								</b:selectOneMenu>
+							</b:column>
+							<b:column medium-screen="1">
+								<b:commandButton look="primary" iconAwesome="plus" value="Adicionar" ajax="true" style="margin-top:25px;"
+									actionListener="#{contatoMB.adicionaTelefone}" process="pnlTelefone" update="tblTelefone pnlTelefone"
+								/>
+							</b:column>
+						</b:row>
+						<b:row>
+							<b:column>
+								<b:dataTable value="#{contatoMB.contato.telefones}" var="telefone" id="tblTelefone"
+									customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+								>
+									<b:dataTableColumn value="#{telefone.ddd}" label="DDD" />
+									<b:dataTableColumn value="#{telefone.numero}" label="Número" />
+									<b:dataTableColumn value="#{telefone.tipo}" label="Tipo" />
+									<b:dataTableColumn style="width:5%;" label="" orderable="false">
+										<b:commandButton look="success" iconAwesome="edit" value="Editar" update="@form" actionListener="#{contatoMB.editaTelefone(telefone)}" />
+									</b:dataTableColumn>
+									<b:dataTableColumn style="width:5%;" label="" orderable="false">
+										<b:commandButton look="danger" iconAwesome="trash" value="Remover" actionListener="#{contatoMB.removeTelefone(telefone)}" />
+									</b:dataTableColumn>
+								</b:dataTable>
+							</b:column>
+						</b:row>
+					</b:panel>
+					<b:row>
+						<b:column medium-screen="1">
+							<b:commandButton look="primary" iconAwesome="save" value="Salvar" action="#{contatoMB.salvar}" />
+						</b:column>
+						<b:column medium-screen="1">
+							<b:button look="danger" iconAwesome="backward" value="Retornar" outcome="contatos?faces-redirect=true" />
+						</b:column>
+					</b:row>
+				</b:panel>
+			</b:form>
+		</b:container>
+	</ui:define>
+</ui:composition>
+</html>
